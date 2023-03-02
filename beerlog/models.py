@@ -5,7 +5,7 @@ from statistics import mean
 from datetime import datetime
 
 
-class beer(SQLModel, table=True):
+class Beer(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True, default=None, index=True)
     name: str
     style: str
@@ -23,14 +23,8 @@ class beer(SQLModel, table=True):
 
     @validator("rate", always=True)
     def calculate_rate(cls, v, values):
-        rate = mean(
-            [
-                values["flavor"],
-                values["image"],
-                values["cost"]
-            ]
-        )
+        rate = mean([values["flavor"], values["image"], values["cost"]])
         return int(rate)
 
 
-brewdog = beer(name="brewdog", style="NEIPA", flavor=6, image=8, cost=8)
+brewdog = Beer(name="brewdog", style="NEIPA", flavor=6, image=8, cost=8)
