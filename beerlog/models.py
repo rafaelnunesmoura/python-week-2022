@@ -16,13 +16,13 @@ class Beer(SQLModel, table=True):
     date: datetime = Field(default_factory=datetime.now)
 
     @validator("flavor", "image", "cost")
-    async def validate_ratings(cls, v, field):
+    def validate_ratings(cls, v, field):
         if v < 1 or v > 10:
             raise RuntimeError(f"{field.name} must be between 1 an 10")
         return v
 
     @validator("rate", always=True)
-    async def calculate_rate(cls, v, values):
+    def calculate_rate(cls, v, values):
         rate = mean([values["flavor"], values["image"], values["cost"]])
         return int(rate)
 
